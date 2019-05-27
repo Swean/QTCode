@@ -6,6 +6,7 @@ class Base
 {
 public:
     void nor_fun1(){}
+//    void nor_fun1(int a){cout << a << endl;}
     virtual void fun1(){}
     virtual void fun2(){}
     //virtual void fun3() = 0;
@@ -15,6 +16,8 @@ public:
 class Derive : public Base
 {
 public:
+    using Base::nor_fun1;   // 默认是函数隐藏了，外部用不了
+    void nor_fun1(int a){cout << a << endl;}
     void nor_fun2(){}
     virtual void fun2(){ cout << "base fun2:" << (void*)&(Base::fun2) << endl;}
     virtual void fun3(){}
@@ -31,6 +34,8 @@ int main(int argc, char *argv[])
     cout << (void*)&(b2.fun1) << endl;
 
     Derive d2;
+    d2.nor_fun1();  // 需要 using,否则编译失败
+    d2.nor_fun1(2);
     cout << (void*)&(d2.fun1) << endl;
     cout << (void*)&(d2.fun2) << endl;
     cout << (void*)&(d2.fun3) << endl;
