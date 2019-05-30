@@ -20,4 +20,14 @@ class D
     int b;
 };
 
+class Base
+{
+    virtual void vfun1(){}
+};
+
+class Derive : public Base
+{
+
+};
+
 #endif // SIZEOFCLASS_H
