@@ -3,20 +3,21 @@
 
 void printSize();
 
-class A
+class A // 字节1
 {};
 
-class B : A
+class B : A // 字节1
 {};
 
-class C
+class C // 字节1,可见有点类似union，默认的1字节是公用的
 {
     char c;
 };
 
-class D
+class D // 字节8，证明了上面描述，并且有struct一样的字节对齐
 {
     char c;
+    double a;
     int b;
 };
 
