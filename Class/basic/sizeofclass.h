@@ -21,4 +21,14 @@ class D // 字节8，证明了上面描述，并且有struct一样的字节对齐
     int b;
 };
 
+class Base
+{
+    virtual void vfun1(){}
+};
+
+class Derive : public Base
+{
+
+};
+
 #endif // SIZEOFCLASS_H
