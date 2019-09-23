@@ -13,7 +13,7 @@ class IARegister
 {
 public:
     virtual ~IARegister(){}
-    virtual T * get() = 0;
+    virtual T * create() = 0;
 };
 
 template<typename T>
@@ -28,19 +28,21 @@ public:
     }
 
     bool addToMap(const QString &sType, IARegister<T> *p){
-        if(p == NULL)
+        if(NULL == p || sType.isEmpty())
             return false;
         QWriteLocker lock(&m_lockMap);
         m_map.insert(sType, p);
         return true;
     }
-    T * get(const QString &sType)
+    T * create(const QString &sType)
     {
+        if(sType.isEmpty()) return NULL;
         QReadLocker lock(&m_lockMap);
         if(false == m_map.contains(sType))
             return NULL;
         IARegister<T> *p = m_map[sType];
-        return p->get();
+        if(NULL == p) return NULL;
+        return p->create();
     }
 
 private:
@@ -53,9 +55,9 @@ class AFactory
 {
 public:
     AFactory(){}
-    static T* get(QString sType)
+    static T* create(QString sType)
     {
-        return AFactoryMap<T>::getInstance().get(sType);
+        return AFactoryMap<T>::getInstance().create(sType);
     }
 };
 
@@ -67,7 +69,7 @@ public:\
         AFactoryMap<baseName>::getInstance().addToMap(typeName, this);\
     }\
 \
-    baseName * get(){\
+    baseName * create(){\
         return new className();\
     }\
 };\
